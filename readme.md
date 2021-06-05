@@ -2,7 +2,7 @@ Live query with increamental updates (LQIU)
 
 Suppose we query for all posts in a specified time range (from, to).
 We have a Database table with every post as a row in the table.
-Each row has updatedAt column.
+Each row has an updatedAt column.
 
 The client subscribes (WS) to all the posts in the configured range which were updated after some date (aka cursor) (initial value = 1970).
 After each result, the previous subscription is **replaced** by the client with a new one that has the updated cursor.
