@@ -5,7 +5,7 @@ We have a Database table with every post as a row in the table.
 Each row has an updatedAt column.
 
 The client subscribes (WS) to all the posts in the configured range which were updated after some date (aka cursor) (initial value = 1970).
-After each result, the previous subscription is **replaced** by the client with a new one that has the updated cursor.
+After each result, the previous subscription is **replaced** by the client with a new one that has the updated cursor. Alternatively, the subscription server may update the cursor to the date of the last updated entity so the client doesn't need to close and resubscribe.
 
 Each subscription's update has the following payload:<br>
 ids[] - **ids only** for all posts that match the query **without** considiring the updatedAt in the query.<br>
