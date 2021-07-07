@@ -1,0 +1,12 @@
+# Logs
+logs
+
+# Dependency directory
+node_modules
+tmpnodejsnpm-cache
+
+# Optional npm cache directory
+.npm
+
+# js files
+dist/
