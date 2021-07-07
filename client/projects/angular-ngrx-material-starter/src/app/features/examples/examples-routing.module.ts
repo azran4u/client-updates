@@ -14,6 +14,7 @@ import { NotificationsComponent } from './notifications/components/notifications
 import { UserComponent } from './simple-state-management/components/user.component';
 import { ElementsComponent } from './elements/elements.component';
 import { BlogContainerComponent } from './blog/components/blog-container.component';
+import { ParlamentContainerComponent } from './parlament/components/parlament-container.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,11 @@ const routes: Routes = [
         path: 'blog',
         component: BlogContainerComponent,
         data: { title: 'blog' }
+      },
+      {
+        path: 'parlament',
+        component: ParlamentContainerComponent,
+        data: { title: 'parlament' }
       },
       {
         path: 'todos',

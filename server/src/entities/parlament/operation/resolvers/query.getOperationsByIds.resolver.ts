@@ -6,7 +6,7 @@ import { OperationContext } from '../operation.model';
 export const getOperationsByIds: IFieldResolver<
   any,
   OperationContext,
-  EntityChangesSubscriptionFilter
+  EntityChangesSubscriptionFilter['filter']
 > = async (source, args, context, info) => {
-  return await OperationController.getByIds(args.filter.ids);
+  return await OperationController.getByIds(args.ids);
 };

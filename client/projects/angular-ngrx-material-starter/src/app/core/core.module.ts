@@ -74,6 +74,7 @@ import {
   faInstagram,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
+import { GraphQLModule } from '../features/examples/parlament/graphql.module';
 
 export {
   TitleService,
@@ -167,7 +168,8 @@ export function httpLoaderFactory(http: HttpClient) {
 
     // 3rd party
     FontAwesomeModule,
-    TranslateModule
+    TranslateModule,
+    GraphQLModule
   ]
 })
 export class CoreModule {

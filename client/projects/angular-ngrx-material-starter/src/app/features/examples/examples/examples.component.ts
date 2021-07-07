@@ -21,6 +21,7 @@ export class ExamplesComponent implements OnInit {
 
   examples = [
     { link: 'blog', label: 'Blog' },
+    { link: 'parlament', label: 'Parlament' },
     { link: 'todos', label: 'anms.examples.menu.todos' },
     { link: 'stock-market', label: 'anms.examples.menu.stocks' },
     { link: 'theming', label: 'anms.examples.menu.theming' },

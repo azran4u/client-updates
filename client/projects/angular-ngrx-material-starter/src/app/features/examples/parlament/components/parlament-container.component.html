@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row">
+    <h1>operations from store</h1>
+    <ng-container *ngIf="operations$ | async as operations">
+      <mat-card
+        *ngFor="let operation of operations"
+        class="operation"
+        [ngClass]="routeAnimationsElements"
+      >
+        <h2>id: {{ operation.id }} name: {{ operation.name }}</h2>
+      </mat-card>
+    </ng-container>
+    <h1>operations from service</h1>
+    <ng-container *ngIf="operationsFromService$ | async as operations">
+      <mat-card
+        *ngFor="let operation of operations"
+        [ngClass]="routeAnimationsElements"
+      >
+        <h2>id: {{ operation.id }} name: {{ operation.name }}</h2>
+        <button
+          type="button"
+          mat-raised-button
+          color="accent"
+          (click)="deleteOperationById(operation.id)"
+        >
+          delete
+        </button>
+        <button
+          type="button"
+          mat-raised-button
+          color="accent"
+          (click)="updateBlogById(operation.id)"
+        >
+          update
+        </button>
+      </mat-card>
+    </ng-container>
+  </div>
+</div>
