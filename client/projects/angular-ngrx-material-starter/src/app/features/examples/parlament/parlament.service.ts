@@ -102,16 +102,7 @@ export class ParlamentService {
             `subscription operationsChanges value ${JSON.stringify(v, null, 4)}`
           )
         ),
-        map((v) => v.data?.operationsChanges ?? { upserted: [], deleted: [] }),
-        tap((v) =>
-          console.log(
-            `subscription operationsChanges out value ${JSON.stringify(
-              v,
-              null,
-              4
-            )}`
-          )
-        )
+        map((v) => v.data?.operationsChanges ?? { upserted: [], deleted: [] })
       );
   }
 }
