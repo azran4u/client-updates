@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ID, Operation } from './parlament.model';
+import { EntityUpdate, ID, Operation } from './parlament.model';
 
 export const actionOperationDesired = createAction(
   '[Operation] Desired',
@@ -33,7 +33,7 @@ export const actionOperationSubscriptionFailure = createAction(
 
 export const actionOperationUpdated = createAction(
   '[Operation] Updated',
-  props<{ updated: ID[]; deleted: ID[] }>()
+  props<EntityUpdate>()
 );
 
 export const actionOperationDeleted = createAction(

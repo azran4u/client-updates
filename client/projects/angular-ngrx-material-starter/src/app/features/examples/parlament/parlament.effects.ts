@@ -84,11 +84,11 @@ export class ParlamentEffects {
             )
           )
       ),
-      switchMap(([{ updated, deleted }, currentIds]) => {
+      switchMap(([{ upserted, deleted }, currentIds]) => {
         const desiredIds = currentIds.filter(
           (current) => !deleted.includes(current)
         );
-        const updatedIds = updated;
+        const updatedIds = upserted;
 
         const actions: Action[] = [];
 
@@ -114,8 +114,8 @@ export class ParlamentEffects {
       ofType(parlamentAction.actionOperationSubscribeByIds),
       switchMap(({ ids }) =>
         this.parlamentService.subscribeToOperationChanges(ids).pipe(
-          map(({ updated, deleted }) =>
-            parlamentAction.actionOperationUpdated({ updated, deleted })
+          map(({ upserted, deleted }) =>
+            parlamentAction.actionOperationUpdated({ upserted, deleted })
           ),
           catchError((error) =>
             of(parlamentAction.actionOperationSubscriptionFailure({ error }))

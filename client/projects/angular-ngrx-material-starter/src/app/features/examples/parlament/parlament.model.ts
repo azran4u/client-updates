@@ -8,14 +8,16 @@ export interface Operation {
 
 export interface Mo {
   id: ID;
-  name: string;  
+  name: string;
   areas: Area['id'][];
 }
 
 export interface Area {
   id: ID;
-  name: string;  
+  name: string;
 }
 
-
-
+export interface EntityUpdate {
+  upserted: ID[];
+  deleted: ID[];
+}

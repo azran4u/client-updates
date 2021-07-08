@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { gql } from 'apollo-angular';
 import { Apollo } from 'apollo-angular';
 import { Observable, of } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { createIdsForQuery } from '../../../shared/createIdsForQuery';
-import { ID, Operation } from './parlament.model';
+import { EntityUpdate, ID, Operation } from './parlament.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class ParlamentService {
   getAllOperations(): Observable<Operation[]> {
     return this.apollo
       .use('parlament')
-      .query<Operation[]>({
+      .query<{ getAllOperations: Operation[] }>({
         query: gql`
           query getAllOperations {
             getAllOperations {
@@ -28,15 +28,19 @@ export class ParlamentService {
         `
       })
       .pipe(
-        tap((v) => console.log(v)),
-        map((v) => v.data['getAllOperations'] || [])
+        tap((v) =>
+          console.log(
+            `query getAllOperations value ${JSON.stringify(v, null, 4)}`
+          )
+        ),
+        map((v) => v.data?.getAllOperations ?? [])
       );
   }
 
   getOperationsByIds(ids: ID[]): Observable<Operation[]> {
     return this.apollo
       .use('parlament')
-      .query<Operation[]>({
+      .query<{ getOperationsByIds: Operation[] }>({
         query: gql`
           query getOperationsByIds {
             getOperationsByIds(ids: ${createIdsForQuery(ids)}) {
@@ -47,13 +51,20 @@ export class ParlamentService {
           }
         `
       })
-      .pipe(map((v) => v.data['getOperationsByIds'] || []));
+      .pipe(
+        tap((v) =>
+          console.log(
+            `query getOperationsByIds value ${JSON.stringify(v, null, 4)}`
+          )
+        ),
+        map((v) => v.data?.getOperationsByIds ?? [])
+      );
   }
 
   updateOperations(upserted: Operation[], deleted: ID[]): Observable<Boolean> {
     return this.apollo
       .use('parlament')
-      .mutate<Boolean>({
+      .mutate<{ changeOperations: Boolean }>({
         mutation: gql`
         mutation addOperations {
           changeOperations(upserted: ${createIdsForQuery(
@@ -63,19 +74,21 @@ export class ParlamentService {
         `
       })
       .pipe(
-        tap((v) => console.log(v)),
-        map((v) => v.data)
+        tap((v) =>
+          console.log(
+            `mutation changeOperations value ${JSON.stringify(v, null, 4)}`
+          )
+        ),
+        map((v) => v.data?.changeOperations ?? false)
       );
   }
 
-  subscribeToOperationChanges(
-    ids: ID[]
-  ): Observable<{ updated: ID[]; deleted: ID[] }> {
+  subscribeToOperationChanges(ids: ID[]): Observable<EntityUpdate> {
     return this.apollo
       .use('parlament')
-      .subscribe<{ updated: ID[]; deleted: ID[] }>({
+      .subscribe<{ operationsChanges: EntityUpdate }>({
         query: gql`
-      subscription operationChanges {
+      subscription operationsChanges {
         operationsChanges(filter: { ids: ${createIdsForQuery(ids)} }) {
           upserted
           deleted
@@ -84,8 +97,21 @@ export class ParlamentService {
       `
       })
       .pipe(
-        tap((v) => console.log(v)),
-        map((v) => v.data)
+        tap((v) =>
+          console.log(
+            `subscription operationsChanges value ${JSON.stringify(v, null, 4)}`
+          )
+        ),
+        map((v) => v.data?.operationsChanges ?? { upserted: [], deleted: [] }),
+        tap((v) =>
+          console.log(
+            `subscription operationsChanges out value ${JSON.stringify(
+              v,
+              null,
+              4
+            )}`
+          )
+        )
       );
   }
 }
