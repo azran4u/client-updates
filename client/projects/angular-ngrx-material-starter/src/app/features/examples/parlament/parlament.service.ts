@@ -4,7 +4,7 @@ import { Apollo } from 'apollo-angular';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { createIdsForQuery } from '../../../shared/createIdsForQuery';
-import { EntityUpdate, ID, Operation } from './parlament.model';
+import { EntityUpdate, ID, Mo, Operation } from './parlament.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class ParlamentService {
   getAllOperations(): Observable<Operation[]> {
     return this.apollo
       .use('parlament')
-      .query<{ getAllOperations: Operation[] }>({
+      .watchQuery<{ getAllOperations: Operation[] }>({
         query: gql`
           query getAllOperations {
             getAllOperations {
@@ -25,9 +25,10 @@ export class ParlamentService {
               mos
             }
           }
-        `
+        `,
+        pollInterval: 1000
       })
-      .pipe(
+      .valueChanges.pipe(
         tap((v) =>
           console.log(
             `query getAllOperations value ${JSON.stringify(v, null, 4)}`
@@ -103,6 +104,95 @@ export class ParlamentService {
           )
         ),
         map((v) => v.data?.operationsChanges ?? { upserted: [], deleted: [] })
+      );
+  }
+
+  // mo
+  getAllMo(): Observable<Mo[]> {
+    return this.apollo
+      .use('parlament')
+      .watchQuery<{ getAllMo: Mo[] }>({
+        query: gql`
+          query getAllMo {
+            getAllMo {
+              id
+              name
+              areas
+            }
+          }
+        `,
+        pollInterval: 1000
+      })
+      .valueChanges.pipe(
+        tap((v) =>
+          console.log(`query getAllMo value ${JSON.stringify(v, null, 4)}`)
+        ),
+        map((v) => v.data?.getAllMo ?? [])
+      );
+  }
+
+  getMoByIds(ids: ID[]): Observable<Mo[]> {
+    return this.apollo
+      .use('parlament')
+      .query<{ getMoByIds: Mo[] }>({
+        query: gql`
+          query getMoByIds {
+            getMoByIds(ids: ${createIdsForQuery(ids)}) {
+              id
+              name
+              areas
+            }
+          }
+        `
+      })
+      .pipe(
+        tap((v) =>
+          console.log(`query getMoByIds value ${JSON.stringify(v, null, 4)}`)
+        ),
+        map((v) => v.data?.getMoByIds ?? [])
+      );
+  }
+
+  updateMo(upserted: Mo[], deleted: ID[]): Observable<Boolean> {
+    return this.apollo
+      .use('parlament')
+      .mutate<{ changeMo: Boolean }>({
+        mutation: gql`
+        mutation changeMo {
+          changeMo(upserted: ${createIdsForQuery(
+            upserted.map((u) => JSON.stringify(u))
+          )}, deleted: ${createIdsForQuery(deleted)})
+        }        
+        `
+      })
+      .pipe(
+        tap((v) =>
+          console.log(`mutation changeMo value ${JSON.stringify(v, null, 4)}`)
+        ),
+        map((v) => v.data?.changeMo ?? false)
+      );
+  }
+
+  subscribeToMoChanges(ids: ID[]): Observable<EntityUpdate> {
+    return this.apollo
+      .use('parlament')
+      .subscribe<{ moChanges: EntityUpdate }>({
+        query: gql`
+      subscription moChanges {
+        moChanges(filter: { ids: ${createIdsForQuery(ids)} }) {
+          upserted
+          deleted
+        }
+      }
+      `
+      })
+      .pipe(
+        tap((v) =>
+          console.log(
+            `subscription moChanges value ${JSON.stringify(v, null, 4)}`
+          )
+        ),
+        map((v) => v.data?.moChanges ?? { upserted: [], deleted: [] })
       );
   }
 }

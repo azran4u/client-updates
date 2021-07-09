@@ -3,7 +3,9 @@ import { Action, select, Store } from '@ngrx/store';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import {
   catchError,
+  filter,
   map,
+  pairwise,
   switchMap,
   tap,
   withLatestFrom
@@ -18,6 +20,8 @@ import { ParlamentService } from './parlament.service';
 import { of } from 'rxjs';
 
 import * as _ from 'lodash';
+import { ID } from './parlament.model';
+import { startsWith } from 'lodash';
 
 export const PARLAMENT_KEY = 'EXAMPLES.PARLAMENT';
 
@@ -135,6 +139,121 @@ export class ParlamentEffects {
           ),
           catchError((error) =>
             of(parlamentAction.actionOperationFetchFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  // track changes in operations in store and change the desired mo ids
+  moChanges$ = createEffect(() =>
+    this.store.select(parlamentSelectors.selectAllOperations).pipe(
+      map((operations) => {
+        let allMosIds: ID[] = [];
+        operations.forEach((operation) => {
+          allMosIds = _.uniq(_.sortBy(_.concat(allMosIds, operation.mos)));
+        });
+        return allMosIds;
+      }),
+      pairwise(),
+      map(([from, to]) => (!_.isEqual(from, to) ? to : undefined)),
+      filter((x) => x !== undefined),
+      tap((ids) => console.log(`mo desired ids changed ${ids}`)),
+      switchMap((ids) => of(parlamentAction.actionMoDesired({ ids })))
+    )
+  );
+
+  desiredMoIds = createEffect(() =>
+    this.actions$.pipe(
+      ofType(parlamentAction.actionMoDesired),
+      withLatestFrom(
+        this.store
+          .pipe(select(parlamentSelectors.selectAllMo))
+          .pipe(map((moInStore) => moInStore.map((mo) => mo.id)))
+      ),
+      switchMap(([{ ids }, currentIds]) => {
+        const idsToRemove = currentIds.filter(
+          (current) => !ids.includes(current)
+        );
+        const addedIds = ids.filter((id) => !currentIds.includes(id));
+        const idsToSubscribe = ids;
+
+        const actions: Action[] = [];
+
+        if (!_.isEqual(idsToSubscribe, currentIds)) {
+          actions.push(
+            parlamentAction.actionMoSubscribeByIds({
+              ids: idsToSubscribe
+            })
+          );
+        }
+
+        if (!_.isEmpty(idsToRemove)) {
+          actions.push(parlamentAction.actionMoDeleted({ ids: idsToRemove }));
+        }
+
+        if (!_.isEmpty(addedIds)) {
+          actions.push(parlamentAction.actionMoFetchByIds({ ids: addedIds }));
+        }
+
+        return actions;
+      })
+    )
+  );
+
+  moDataChanged = createEffect(() =>
+    this.actions$.pipe(
+      ofType(parlamentAction.actionMoUpdated),
+      withLatestFrom(
+        this.store
+          .pipe(select(parlamentSelectors.selectAllMo))
+          .pipe(map((moInStore) => moInStore.map((mo) => mo.id)))
+      ),
+      switchMap(([{ upserted, deleted }, currentIds]) => {
+        const desiredIds = currentIds.filter(
+          (current) => !deleted.includes(current)
+        );
+        const updatedIds = upserted;
+
+        const actions: Action[] = [];
+
+        if (!_.isEqual(desiredIds, currentIds)) {
+          actions.push(parlamentAction.actionMoDesired({ ids: desiredIds }));
+        }
+
+        if (!_.isEmpty(updatedIds)) {
+          actions.push(parlamentAction.actionMoFetchByIds({ ids: updatedIds }));
+        }
+
+        return actions;
+      })
+    )
+  );
+
+  subscribeMoByIds = createEffect(() =>
+    this.actions$.pipe(
+      ofType(parlamentAction.actionMoSubscribeByIds),
+      switchMap(({ ids }) =>
+        this.parlamentService.subscribeToMoChanges(ids).pipe(
+          map(({ upserted, deleted }) =>
+            parlamentAction.actionMoUpdated({ upserted, deleted })
+          ),
+          catchError((error) =>
+            of(parlamentAction.actionMoSubscriptionFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  fetchMoByIds = createEffect(() =>
+    this.actions$.pipe(
+      ofType(parlamentAction.actionMoFetchByIds),
+      switchMap(({ ids }) =>
+        this.parlamentService.getMoByIds(ids).pipe(
+          map((mos) => parlamentAction.actionMoFetchSuccess({ mos })),
+          catchError((error) =>
+            of(parlamentAction.actionMoFetchFailure({ error }))
           )
         )
       )

@@ -6,6 +6,7 @@ import { ApolloClientOptions } from '@apollo/client/core';
 import { HttpLinkModule } from 'apollo-angular-link-http';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { ParlamentEntityViewComponentComponent } from './view/parlament-entity-view-component/parlament-entity-view-component.component';
 
 export function createDefaultApollo(
   httpLink: HttpLink
@@ -72,6 +73,7 @@ export function createNamedApollo(
       deps: [HttpLink],
       useFactory: createNamedApollo
     }
-  ]
+  ],
+  declarations: []
 })
 export class GraphQLModule {}

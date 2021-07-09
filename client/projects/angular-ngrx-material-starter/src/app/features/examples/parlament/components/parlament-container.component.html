@@ -1,39 +1,34 @@
 <div class="container">
-  <div class="row">
-    <h1>operations from store</h1>
+  <div class="column">
     <ng-container *ngIf="operations$ | async as operations">
-      <mat-card
-        *ngFor="let operation of operations"
-        class="operation"
-        [ngClass]="routeAnimationsElements"
+      <anms-parlament-entity-view-component
+        [data]="operations"
+        [title]="'operations from store'"
       >
-        <h2>id: {{ operation.id }} name: {{ operation.name }}</h2>
-      </mat-card>
+      </anms-parlament-entity-view-component>
     </ng-container>
-    <h1>operations from service</h1>
     <ng-container *ngIf="operationsFromService$ | async as operations">
-      <mat-card
-        *ngFor="let operation of operations"
-        [ngClass]="routeAnimationsElements"
+      <anms-parlament-entity-view-component
+        [data]="operations"
+        [title]="'operations from service'"
       >
-        <h2>id: {{ operation.id }} name: {{ operation.name }}</h2>
-        <button
-          type="button"
-          mat-raised-button
-          color="accent"
-          (click)="deleteOperationById(operation.id)"
-        >
-          delete
-        </button>
-        <button
-          type="button"
-          mat-raised-button
-          color="accent"
-          (click)="updateBlogById(operation.id)"
-        >
-          update
-        </button>
-      </mat-card>
+      </anms-parlament-entity-view-component>
+    </ng-container>
+  </div>
+  <div class="column">
+    <ng-container *ngIf="mos$ | async as mos">
+      <anms-parlament-entity-view-component
+        [data]="mos"
+        [title]="'mos from store'"
+      >
+      </anms-parlament-entity-view-component>
+    </ng-container>
+    <ng-container *ngIf="mosFromService$ | async as mos">
+      <anms-parlament-entity-view-component
+        [data]="mos"
+        [title]="'mos from service'"
+      >
+      </anms-parlament-entity-view-component>
     </ng-container>
   </div>
 </div>

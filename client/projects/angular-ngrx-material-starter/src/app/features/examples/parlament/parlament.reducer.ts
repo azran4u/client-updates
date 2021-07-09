@@ -15,12 +15,22 @@ const reducer = createReducer(
   initialState,
   on(parlamentAction.actionOperationFetchSuccess, (state, { operations }) =>
     produce(state, (draft) => {
-      operations.map((blog) => draft.operations.set(blog.id, blog));
+      operations.map((x) => draft.operations.set(x.id, x));
     })
   ),
   on(parlamentAction.actionOperationDeleted, (state, { ids }) =>
     produce(state, (draft) => {
       ids.map((id) => draft.operations.delete(id));
+    })
+  ),
+  on(parlamentAction.actionMoFetchSuccess, (state, { mos }) =>
+    produce(state, (draft) => {
+      mos.map((x) => draft.mo.set(x.id, x));
+    })
+  ),
+  on(parlamentAction.actionMoDeleted, (state, { ids }) =>
+    produce(state, (draft) => {
+      ids.map((id) => draft.mo.delete(id));
     })
   )
 );

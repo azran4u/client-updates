@@ -6,7 +6,7 @@ import { MoContext } from '../mo.model';
 export const getMoByIds: IFieldResolver<
   any,
   MoContext,
-  EntityChangesSubscriptionFilter
+  EntityChangesSubscriptionFilter['filter']
 > = async (source, args, context, info) => {
-  return await MoController.getByIds(args.filter.ids);
+  return await MoController.getByIds(args.ids);
 };

@@ -34,7 +34,7 @@ import { BlogService } from './blog/blog.service';
 import { BlogEffects } from './blog/blog.effects';
 import { ParlamentContainerComponent } from './parlament/components/parlament-container.component';
 import { ParlamentEffects } from './parlament/parlament.effects';
-import { GraphQLModule } from './parlament/graphql.module';
+import { ParlamentEntityViewComponentComponent } from './parlament/view/parlament-entity-view-component/parlament-entity-view-component.component';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -70,6 +70,7 @@ export function httpLoaderFactory(http: HttpClient) {
     ])
   ],
   declarations: [
+    ParlamentEntityViewComponentComponent,
     ExamplesComponent,
     BlogContainerComponent,
     ParlamentContainerComponent,

@@ -14,6 +14,7 @@ import { ID, Operation } from '../parlament.model';
 import * as parlamentSelectors from '../parlament.selectors';
 import { map, switchMap } from 'rxjs/operators';
 import { ParlamentService } from '../parlament.service';
+import { ParlamentEntityWithChilds } from '../view/parlament-entity-view-component/parlament-entity-view-component.component';
 
 @Component({
   selector: 'anms-parlament',
@@ -23,8 +24,11 @@ import { ParlamentService } from '../parlament.service';
 })
 export class ParlamentContainerComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
-  operations$: Observable<Operation[]>;
-  operationsFromService$: Observable<Operation[]>;
+  operations$: Observable<ParlamentEntityWithChilds[]>;
+  operationsFromService$: Observable<ParlamentEntityWithChilds[]>;
+
+  mos$: Observable<ParlamentEntityWithChilds[]>;
+  mosFromService$: Observable<ParlamentEntityWithChilds[]>;
 
   constructor(
     public store: Store,
@@ -36,9 +40,35 @@ export class ParlamentContainerComponent implements OnInit {
       parlamentAction.actionOperationDesired({ ids: ['op1', 'op2'] })
     );
     this.operations$ = this.store.pipe(
-      select(parlamentSelectors.selectAllOperations)
+      select(parlamentSelectors.selectAllOperations),
+      map((op) =>
+        op.map((o) => {
+          return { id: o.id, name: o.name, childs: o.mos };
+        })
+      )
     );
-    this.operationsFromService$ = this.parlamentService.getAllOperations();
+    this.operationsFromService$ = this.parlamentService.getAllOperations().pipe(
+      map((op) =>
+        op.map((o) => {
+          return { id: o.id, name: o.name, childs: o.mos };
+        })
+      )
+    );
+    this.mos$ = this.store.pipe(
+      select(parlamentSelectors.selectAllMo),
+      map((op) =>
+        op.map((o) => {
+          return { id: o.id, name: o.name, childs: o.areas };
+        })
+      )
+    );
+    this.mosFromService$ = this.parlamentService.getAllMo().pipe(
+      map((op) =>
+        op.map((o) => {
+          return { id: o.id, name: o.name, childs: o.areas };
+        })
+      )
+    );
   }
 
   deleteOperationById(id: ID) {

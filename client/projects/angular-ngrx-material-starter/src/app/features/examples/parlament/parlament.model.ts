@@ -1,21 +1,18 @@
 export type ID = string;
 
-export interface Operation {
+export interface ParlamentEntity {
   id: ID;
   name: string;
+}
+export interface Operation extends ParlamentEntity {
   mos: Mo['id'][];
 }
 
-export interface Mo {
-  id: ID;
-  name: string;
+export interface Mo extends ParlamentEntity {
   areas: Area['id'][];
 }
 
-export interface Area {
-  id: ID;
-  name: string;
-}
+export interface Area extends ParlamentEntity {}
 
 export interface EntityUpdate {
   upserted: ID[];
