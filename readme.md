@@ -30,3 +30,12 @@ deleted: **array of ids**
 The client removes from the store each comment that is in the deleted array. The client query by id all the comments that are in the updated array. The cleint resubscribes to the new list of comments ids.
 
 
+hasura
+live query that returns lots of results 100K and over (is it possible over ws? pagination?)
+websocket keepalive? potential loss of updates
+performance for many (users x entities) live queries
+Live query debounce adds extra delay to afrep
+authentication using afid?
+web socket thru apigw?
+custom permissions (glx / mirage)
+logs to splunk / elk

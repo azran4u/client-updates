@@ -21,7 +21,6 @@ import { of } from 'rxjs';
 
 import * as _ from 'lodash';
 import { ID } from './parlament.model';
-import { startsWith } from 'lodash';
 
 export const PARLAMENT_KEY = 'EXAMPLES.PARLAMENT';
 
@@ -132,16 +131,66 @@ export class ParlamentEffects {
   fetchOperationsByIds = createEffect(() =>
     this.actions$.pipe(
       ofType(parlamentAction.actionOperationFetchByIds),
-      switchMap(({ ids }) =>
+      filter(({ ids }) => ids.length > 0),
+      withLatestFrom(
+        this.store.pipe(select(parlamentSelectors.selectAllOperations))
+      ),
+      switchMap(([{ ids }, operationsInStore]) =>
         this.parlamentService.getOperationsByIds(ids).pipe(
-          map((operations) =>
-            parlamentAction.actionOperationFetchSuccess({ operations })
-          ),
+          switchMap((operations) => {
+            const currentIdsInStore = operationsInStore.map(
+              (operation) => operation.id
+            );
+            const idsFromBackend = operations.map((op) => op.id);
+            const deleted = currentIdsInStore.filter(
+              (id) => !idsFromBackend.includes(id)
+            );
+            const added = idsFromBackend.filter(
+              (id) => !currentIdsInStore.includes(id)
+            );
+            const isUpdated = !_.isEqual(operations, operationsInStore);
+            const actions: Action[] = [];
+            if (deleted.length > 0) {
+              actions.push(
+                parlamentAction.actionOperationDeleted({ ids: deleted })
+              );
+            }
+
+            if (isUpdated) {
+              actions.push(
+                parlamentAction.actionOperationFetchSuccess({ operations })
+              );
+            }
+
+            if (added.length > 0 || deleted.length > 0) {
+              actions.push(
+                parlamentAction.actionOperationDesired({ ids: idsFromBackend })
+              );
+            }
+
+            return actions;
+          }),
           catchError((error) =>
             of(parlamentAction.actionOperationFetchFailure({ error }))
           )
         )
       )
+    )
+  );
+
+  wsConnected = createEffect(() =>
+    this.actions$.pipe(
+      ofType(parlamentAction.actionWsConnected),
+      switchMap(() =>
+        this.store
+          .pipe(select(parlamentSelectors.selectAllOperations))
+          .pipe(
+            map((operationsInStore) =>
+              operationsInStore.map((operation) => operation.id)
+            )
+          )
+      ),
+      switchMap((ids) => of(parlamentAction.actionOperationFetchByIds({ ids })))
     )
   );
 

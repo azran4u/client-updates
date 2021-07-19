@@ -1,12 +1,17 @@
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
 import { APOLLO_NAMED_OPTIONS, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache, split } from '@apollo/client/core';
+import { createHttpLink, InMemoryCache, split } from '@apollo/client/core';
 import { ApolloClientOptions } from '@apollo/client/core';
 import { HttpLinkModule } from 'apollo-angular-link-http';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { ParlamentEntityViewComponentComponent } from './view/parlament-entity-view-component/parlament-entity-view-component.component';
+import { ActionReducerMap, Store, StoreConfig, StoreModule } from '@ngrx/store';
+import { ExamplesState, FEATURE_NAME } from '../examples.state';
+import { ParlamentState } from './parlament.state';
+import * as fromFeature from '../examples.state';
+import { ExamplesModule } from '../examples.module';
+import * as parlamentActions from './parlament.actions';
 
 export function createDefaultApollo(
   httpLink: HttpLink
@@ -20,7 +25,8 @@ export function createDefaultApollo(
 }
 
 export function createNamedApollo(
-  httpLink: HttpLink
+  httpLink: HttpLink,
+  store: Store
 ): Record<string, ApolloClientOptions<any>> {
   const httpParlament = httpLink.create({
     uri: 'http://localhost:8090/graphql'
@@ -31,7 +37,11 @@ export function createNamedApollo(
     uri: 'ws://localhost:8090/graphql',
     options: {
       reconnect: true,
-      connectionCallback: () => {}
+      inactivityTimeout: 5000,
+      connectionCallback: (error, result) => {
+        console.log(`ws reconnected error=${error} result=${result}`);
+        store.dispatch(parlamentActions.actionWsConnected());
+      }
     }
   });
 
@@ -60,7 +70,18 @@ export function createNamedApollo(
   };
 }
 
+// export const FEATURE_CONFIG_TOKEN = new InjectionToken<
+//   StoreConfig<ExamplesState>
+// >('examples');
 @NgModule({
+  imports: [ExamplesModule],
+  // imports: [
+  //   StoreModule.forFeature(
+  //     fromFeature.FEATURE_NAME,
+  //     fromFeature.reducers,
+  //     FEATURE_CONFIG_TOKEN
+  //   )
+  // ],
   exports: [HttpLinkModule],
   providers: [
     // {
@@ -68,9 +89,14 @@ export function createNamedApollo(
     //   deps: [HttpLink],
     //   useFactory: createDefaultApollo
     // },
+    // {
+    //   provide: FEATURE_CONFIG_TOKEN,
+    //   deps: [SomeService],
+    //   useFactory: getConfig,
+    // },
     {
       provide: APOLLO_NAMED_OPTIONS,
-      deps: [HttpLink],
+      deps: [HttpLink, Store],
       useFactory: createNamedApollo
     }
   ],

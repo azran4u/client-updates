@@ -42,6 +42,8 @@ export const actionOperationDeleted = createAction(
   props<{ ids: ID[] }>()
 );
 
+export const actionWsConnected = createAction('[ALL ENTITIES] WS Connected');
+
 // mo actions
 export const actionMoDesired = createAction(
   '[Mo] Desired',

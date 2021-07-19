@@ -13,5 +13,6 @@ export const apolloServer = new ApolloServer({
       numOfConnectedWs--;
       console.log(`ws disconnected, current ${numOfConnectedWs}`);
     },
+    keepAlive: 1000,
   },
 });
