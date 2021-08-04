@@ -1,0 +1,51 @@
+query allOperations {
+  operations {
+    id
+    name
+  }
+}
+
+query allMos {
+  mos {
+    id
+    name
+    operation {
+      id
+      name
+    }
+  }
+}
+
+query findMoByName {
+  mos(where: { name: { _eq: "mo1" } }) {
+    id
+    name
+    updated_at
+  }
+}
+
+mutation addMoToOperation1 {
+  update_mos(
+    where: { id: { _eq: "31d29db8-e823-4af0-ab53-f8631af5e552" } }
+    _set: { operation_id: "bfa80256-1f27-4911-b293-7c86318b186b" }
+  ) {
+    affected_rows
+    returning {
+      id
+      name
+    }
+  }
+}
+
+mutation addMoToOperation2 {
+  update_mos(
+    where: { id: { _eq: "31d29db8-e823-4af0-ab53-f8631af5e552" } }
+    _set: { operation_id: "e955754b-ccd4-4d0e-bfab-f16311348f54" }
+  ) {
+    affected_rows
+    returning {
+      id
+      name
+    }
+  }
+}
