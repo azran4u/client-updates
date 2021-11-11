@@ -14,7 +14,7 @@ import { ID, Operation } from '../parlament.model';
 import * as parlamentSelectors from '../parlament.selectors';
 import { map, switchMap } from 'rxjs/operators';
 import { ParlamentService } from '../parlament.service';
-import { ParlamentEntityWithChilds } from '../view/parlament-entity-view-component/parlament-entity-view-component.component';
+import { ParlamentEntityWithChilds } from '../components/parlament-entity-view-component/parlament-entity-view-component.component';
 
 @Component({
   selector: 'anms-parlament',

@@ -3,7 +3,7 @@ import { gql } from 'apollo-angular';
 import { Apollo } from 'apollo-angular';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { createIdsForQuery } from '../../shared/createIdsForQuery';
+import { createIdsForQuery } from './createIdsForQuery';
 import { EntityUpdate, ID, Mo, Operation } from './parlament.model';
 
 @Injectable({
