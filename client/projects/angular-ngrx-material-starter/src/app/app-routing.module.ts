@@ -13,10 +13,10 @@ const routes: Routes = [
       import('./features/about/about.module').then((m) => m.AboutModule)
   },
   {
-    path: 'feature-list',
+    path: 'parlament',
     loadChildren: () =>
-      import('./features/feature-list/feature-list.module').then(
-        (m) => m.FeatureListModule
+      import('./features/examples/examples.module').then(
+        (m) => m.ExamplesModule
       )
   },
   {
@@ -24,13 +24,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/settings/settings.module').then(
         (m) => m.SettingsModule
-      )
-  },
-  {
-    path: 'examples',
-    loadChildren: () =>
-      import('./features/examples/examples.module').then(
-        (m) => m.ExamplesModule
       )
   },
   {

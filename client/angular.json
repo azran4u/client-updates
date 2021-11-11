@@ -40,6 +40,16 @@
             }
           },
           "configurations": {
+            "development": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false,
+              "budgets": []
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -85,6 +95,7 @@
           }
         },
         "serve": {
+          "defaultConfiguration": "development",
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "angular-ngrx-material-starter:build"
@@ -92,6 +103,9 @@
           "configurations": {
             "production": {
               "browserTarget": "angular-ngrx-material-starter:build:production"
+            },
+            "development": {
+              "browserTarget": "angular-ngrx-material-starter:build:development"
             }
           }
         },

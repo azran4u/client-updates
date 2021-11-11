@@ -11,27 +11,6 @@ import { environment } from '../../../environments/environment';
 
 import { FEATURE_NAME, reducers } from './examples.state';
 import { ExamplesRoutingModule } from './examples-routing.module';
-import { ExamplesComponent } from './examples/examples.component';
-import { TodosContainerComponent } from './todos/components/todos-container.component';
-import { TodosEffects } from './todos/todos.effects';
-import { StockMarketContainerComponent } from './stock-market/components/stock-market-container.component';
-import { StockMarketEffects } from './stock-market/stock-market.effects';
-import { StockMarketService } from './stock-market/stock-market.service';
-import { ParentComponent } from './theming/parent/parent.component';
-import { ChildComponent } from './theming/child/child.component';
-import { CrudComponent } from './crud/components/crud.component';
-import { BooksEffects } from './crud/books.effects';
-import { FormComponent } from './form/components/form.component';
-import { FormEffects } from './form/form.effects';
-import { AuthenticatedComponent } from './authenticated/authenticated.component';
-import { NotificationsComponent } from './notifications/components/notifications.component';
-import { ExamplesEffects } from './examples.effects';
-import { UserComponent } from './simple-state-management/components/user.component';
-import { UserService } from './simple-state-management/user.service';
-import { ElementsComponent } from './elements/elements.component';
-import { BlogContainerComponent } from './blog/components/blog-container.component';
-import { BlogService } from './blog/blog.service';
-import { BlogEffects } from './blog/blog.effects';
 import { ParlamentContainerComponent } from './parlament/components/parlament-container.component';
 import { ParlamentEffects } from './parlament/parlament.effects';
 import { ParlamentEntityViewComponentComponent } from './parlament/view/parlament-entity-view-component/parlament-entity-view-component.component';
@@ -59,33 +38,13 @@ export function httpLoaderFactory(http: HttpClient) {
       },
       isolate: true
     }),
-    EffectsModule.forFeature([
-      BlogEffects,
-      ParlamentEffects,
-      ExamplesEffects,
-      TodosEffects,
-      StockMarketEffects,
-      BooksEffects,
-      FormEffects
-    ])
+    EffectsModule.forFeature([ParlamentEffects])
   ],
   declarations: [
     ParlamentEntityViewComponentComponent,
-    ExamplesComponent,
-    BlogContainerComponent,
-    ParlamentContainerComponent,
-    TodosContainerComponent,
-    StockMarketContainerComponent,
-    ParentComponent,
-    ChildComponent,
-    AuthenticatedComponent,
-    CrudComponent,
-    FormComponent,
-    NotificationsComponent,
-    UserComponent,
-    ElementsComponent
+    ParlamentContainerComponent
   ],
-  providers: [StockMarketService, UserService, BlogService]
+  providers: []
 })
 export class ExamplesModule {
   constructor() {}
