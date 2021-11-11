@@ -1,18 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {
-  ROUTE_ANIMATIONS_ELEMENTS,
-  NotificationService
-} from '../../../core/core.module';
+import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
 
 import * as parlamentAction from '../parlament.actions';
-import { ID, Operation } from '../parlament.model';
+import { ID } from '../parlament.model';
 import * as parlamentSelectors from '../parlament.selectors';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ParlamentService } from '../parlament.service';
 import { ParlamentEntityWithChilds } from '../components/parlament-entity-view-component/parlament-entity-view-component.component';
 
