@@ -17,14 +17,12 @@
 
 @import 'styles-reset.scss-theme';
 @import './app/app/app.component.scss-theme';
-@import './app/shared/big-input/big-input/big-input.component.scss-theme';
 @import './app/features/about/about/about.component.scss-theme';
 
 @mixin custom-components-theme($theme) {
   @include anms-styles-reset-theme($theme);
   @include anms-app-component-theme($theme);
   @include anms-about-component-theme($theme);
-  @include anms-big-input-component-theme($theme);
 }
 
 .default-theme {

@@ -1,16 +1,13 @@
-import { InjectionToken, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { APOLLO_NAMED_OPTIONS, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { createHttpLink, InMemoryCache, split } from '@apollo/client/core';
+import { InMemoryCache, split } from '@apollo/client/core';
 import { ApolloClientOptions } from '@apollo/client/core';
 import { HttpLinkModule } from 'apollo-angular-link-http';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { ActionReducerMap, Store, StoreConfig, StoreModule } from '@ngrx/store';
-import { ExamplesState, FEATURE_NAME } from '../examples/examples.state';
-import { ParlamentState } from './parlament.state';
-import * as fromFeature from '../examples/examples.state';
-import { ExamplesModule } from '../examples/examples.module';
+import { Store } from '@ngrx/store';
+import { ExamplesModule } from '../examples.module';
 import * as parlamentActions from './parlament.actions';
 
 export function createDefaultApollo(
@@ -70,30 +67,10 @@ export function createNamedApollo(
   };
 }
 
-// export const FEATURE_CONFIG_TOKEN = new InjectionToken<
-//   StoreConfig<ExamplesState>
-// >('examples');
 @NgModule({
   imports: [ExamplesModule],
-  // imports: [
-  //   StoreModule.forFeature(
-  //     fromFeature.FEATURE_NAME,
-  //     fromFeature.reducers,
-  //     FEATURE_CONFIG_TOKEN
-  //   )
-  // ],
   exports: [HttpLinkModule],
   providers: [
-    // {
-    //   provide: APOLLO_OPTIONS,
-    //   deps: [HttpLink],
-    //   useFactory: createDefaultApollo
-    // },
-    // {
-    //   provide: FEATURE_CONFIG_TOKEN,
-    //   deps: [SomeService],
-    //   useFactory: getConfig,
-    // },
     {
       provide: APOLLO_NAMED_OPTIONS,
       deps: [HttpLink, Store],

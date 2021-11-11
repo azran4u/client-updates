@@ -80,6 +80,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(authLogout());
   }
 
+  //@ts-ignore
   onLanguageSelect({ value: language }) {
     this.store.dispatch(actionSettingsChangeLanguage({ language }));
   }

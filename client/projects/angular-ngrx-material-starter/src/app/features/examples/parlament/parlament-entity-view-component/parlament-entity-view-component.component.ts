@@ -10,7 +10,7 @@ import {
   OnChanges,
   AfterViewInit
 } from '@angular/core';
-import { ID, ParlamentEntity } from '../../parlament.model';
+import { ID, ParlamentEntity } from '../parlament.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 

@@ -28,8 +28,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faMediumM, faGithub } from '@fortawesome/free-brands-svg-icons';
 
-import { BigInputComponent } from './big-input/big-input/big-input.component';
-import { BigInputActionComponent } from './big-input/big-input-action/big-input-action.component';
 import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
 import { MaterialModule } from './material.module';
 
@@ -44,11 +42,7 @@ import { MaterialModule } from './material.module';
 
     FontAwesomeModule
   ],
-  declarations: [
-    BigInputComponent,
-    BigInputActionComponent,
-    RtlSupportDirective
-  ],
+  declarations: [RtlSupportDirective],
   exports: [
     CommonModule,
     FormsModule,
@@ -60,8 +54,6 @@ import { MaterialModule } from './material.module';
 
     FontAwesomeModule,
 
-    BigInputComponent,
-    BigInputActionComponent,
     RtlSupportDirective
   ]
 })

@@ -49,26 +49,32 @@ export class SettingsContainerComponent implements OnInit {
     this.settings$ = this.store.pipe(select(selectSettings));
   }
 
+  //@ts-ignore
   onLanguageSelect({ value: language }) {
     this.store.dispatch(actionSettingsChangeLanguage({ language }));
   }
 
+  //@ts-ignore
   onThemeSelect({ value: theme }) {
     this.store.dispatch(actionSettingsChangeTheme({ theme }));
   }
 
+  //@ts-ignore
   onAutoNightModeToggle({ checked: autoNightMode }) {
     this.store.dispatch(actionSettingsChangeAutoNightMode({ autoNightMode }));
   }
 
+  //@ts-ignore
   onStickyHeaderToggle({ checked: stickyHeader }) {
     this.store.dispatch(actionSettingsChangeStickyHeader({ stickyHeader }));
   }
 
+  //@ts-ignore
   onPageAnimationsToggle({ checked: pageAnimations }) {
     this.store.dispatch(actionSettingsChangeAnimationsPage({ pageAnimations }));
   }
 
+  //@ts-ignore
   onElementsAnimationsToggle({ checked: elementsAnimations }) {
     this.store.dispatch(
       actionSettingsChangeAnimationsElements({ elementsAnimations })

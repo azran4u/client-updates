@@ -12,11 +12,12 @@
     "module": "esnext",
     "target": "es2015",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"]
+    "lib": ["es2018", "dom"],
+    "noImplicitAny": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
-    // "strictTemplates": true
+    "strictInjectionParameters": true,
+    "strictTemplates": true
   }
 }

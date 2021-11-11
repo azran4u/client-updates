@@ -11,9 +11,9 @@ import {
   withLatestFrom
 } from 'rxjs/operators';
 
-import { LocalStorageService } from '../../core/core.module';
+import { LocalStorageService } from '../../../core/core.module';
 
-import { State } from '../examples/examples.state';
+import { State } from '../examples.state';
 import * as parlamentAction from './parlament.actions';
 import * as parlamentSelectors from './parlament.selectors';
 import { ParlamentService } from './parlament.service';

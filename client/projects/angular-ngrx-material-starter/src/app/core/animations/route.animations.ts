@@ -59,12 +59,14 @@ const STEPS_ALL: any[] = [
     { optional: true }
   )
 ];
+//@ts-ignore
 const STEPS_NONE = [];
 const STEPS_PAGE = [STEPS_ALL[0], STEPS_ALL[2]];
 const STEPS_ELEMENTS = [STEPS_ALL[1], STEPS_ALL[3]];
 
 export const routeAnimations = trigger('routeAnimations', [
   transition(isRouteAnimationsAll, STEPS_ALL),
+  //@ts-ignore
   transition(isRouteAnimationsNone, STEPS_NONE),
   transition(isRouteAnimationsPage, STEPS_PAGE),
   transition(isRouteAnimationsElements, STEPS_ELEMENTS)
