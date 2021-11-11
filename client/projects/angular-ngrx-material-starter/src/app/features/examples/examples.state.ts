@@ -1,8 +1,8 @@
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
 import { AppState } from '../../core/core.module';
-import { ParlamentState } from './parlament/parlament.state';
-import { parlamentReducer } from './parlament/parlament.reducer';
+import { ParlamentState } from '../parlament/parlament.state';
+import { parlamentReducer } from '../parlament/parlament.reducer';
 
 export const FEATURE_NAME = 'examples';
 export const selectExamples =

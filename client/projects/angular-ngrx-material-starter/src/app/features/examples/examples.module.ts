@@ -11,9 +11,9 @@ import { environment } from '../../../environments/environment';
 
 import { FEATURE_NAME, reducers } from './examples.state';
 import { ExamplesRoutingModule } from './examples-routing.module';
-import { ParlamentContainerComponent } from './parlament/components/parlament-container.component';
-import { ParlamentEffects } from './parlament/parlament.effects';
-import { ParlamentEntityViewComponentComponent } from './parlament/view/parlament-entity-view-component/parlament-entity-view-component.component';
+import { ParlamentContainerComponent } from '../parlament/components/parlament-container.component';
+import { ParlamentEffects } from '../parlament/parlament.effects';
+import { ParlamentEntityViewComponentComponent } from '../parlament/view/parlament-entity-view-component/parlament-entity-view-component.component';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(

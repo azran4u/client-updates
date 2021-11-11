@@ -1,4 +1,4 @@
-import { ID } from '../features/examples/parlament/parlament.model';
+import { ID } from '../features/parlament/parlament.model';
 import * as _ from 'lodash';
 
 export function createIdsForQuery(ids: ID[]): string {

@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { ExamplesState, selectExamples } from '../examples.state';
+import { ExamplesState, selectExamples } from '../examples/examples.state';
 
 export const selectParlamentState = createSelector(
   selectExamples,

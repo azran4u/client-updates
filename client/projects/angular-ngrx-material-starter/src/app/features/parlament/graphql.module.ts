@@ -7,10 +7,10 @@ import { HttpLinkModule } from 'apollo-angular-link-http';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ActionReducerMap, Store, StoreConfig, StoreModule } from '@ngrx/store';
-import { ExamplesState, FEATURE_NAME } from '../examples.state';
+import { ExamplesState, FEATURE_NAME } from '../examples/examples.state';
 import { ParlamentState } from './parlament.state';
-import * as fromFeature from '../examples.state';
-import { ExamplesModule } from '../examples.module';
+import * as fromFeature from '../examples/examples.state';
+import { ExamplesModule } from '../examples/examples.module';
 import * as parlamentActions from './parlament.actions';
 
 export function createDefaultApollo(

@@ -74,7 +74,7 @@ import {
   faInstagram,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
-import { GraphQLModule } from '../features/examples/parlament/graphql.module';
+import { GraphQLModule } from '../features/parlament/graphql.module';
 
 export {
   TitleService,

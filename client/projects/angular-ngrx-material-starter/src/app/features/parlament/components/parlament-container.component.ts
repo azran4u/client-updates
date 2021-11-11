@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 import {
   ROUTE_ANIMATIONS_ELEMENTS,
   NotificationService
-} from '../../../../core/core.module';
+} from '../../../core/core.module';
 
 import * as parlamentAction from '../parlament.actions';
 import { ID, Operation } from '../parlament.model';
