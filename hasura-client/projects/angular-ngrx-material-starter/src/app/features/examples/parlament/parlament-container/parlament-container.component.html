@@ -1,0 +1,36 @@
+<div class="container">
+  <button (click)="closeSubscription()">close subscription</button>
+  <button (click)="openSubscription()">open subscription</button>
+  <div class="column">
+    <ng-container *ngIf="operations$ | async as operations">
+      <anms-parlament-entity-view-component
+        [data]="operations"
+        [title]="'operations from store'"
+      >
+      </anms-parlament-entity-view-component>
+    </ng-container>
+    <ng-container *ngIf="operationsFromService$ | async as operations">
+      <anms-parlament-entity-view-component
+        [data]="operations"
+        [title]="'operations from service'"
+      >
+      </anms-parlament-entity-view-component>
+    </ng-container>
+  </div>
+  <div class="column">
+    <ng-container *ngIf="mos$ | async as mos">
+      <anms-parlament-entity-view-component
+        [data]="mos"
+        [title]="'mos from store'"
+      >
+      </anms-parlament-entity-view-component>
+    </ng-container>
+    <ng-container *ngIf="mosFromService$ | async as mos">
+      <anms-parlament-entity-view-component
+        [data]="mos"
+        [title]="'mos from service'"
+      >
+      </anms-parlament-entity-view-component>
+    </ng-container>
+  </div>
+</div>
