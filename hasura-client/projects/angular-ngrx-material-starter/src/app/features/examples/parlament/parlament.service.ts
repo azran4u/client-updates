@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo, ApolloBase, gql } from 'apollo-angular';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { BaseEntity, ID, Operation } from './parlament.model';
+import { BaseEntity, ID, Mo, Operation } from './parlament.model';
 import * as _ from 'lodash';
 
 @Injectable({
@@ -54,6 +54,43 @@ export class ParlamentService {
       .pipe(map((res) => res.data?.operations ?? []));
   }
 
+  getMoByIds(ids: ID[]): Observable<Mo[]> {
+    if (_.isEmpty(ids)) return of([]);
+    return this.client
+      .query<{ mos: Mo[] }>({
+        query: gql`
+          query mosByIds($ids: [String!]) {
+            mos(where: { id: { _in: $opids } }) {
+              id
+              name
+              areaids
+              updatedAt: updated_at
+            }
+          }
+        `,
+        variables: { ids }
+      })
+      .pipe(map((res) => res.data?.mos ?? []));
+  }
+
+  subscribeToMosByIds(ids: string[]): Observable<BaseEntity[]> {
+    if (_.isEmpty(ids)) return of([]);
+    return this.client
+      .subscribe<{
+        mos: BaseEntity[];
+      }>({
+        query: gql`
+          subscription subscribeToMosByNames($ids: [String!]) {
+            mos(where: { id: { _in: $ids } }) {
+              id
+              updatedAt: updated_at
+            }
+          }
+        `,
+        variables: { ids }
+      })
+      .pipe(map((res) => res.data?.mos ?? []));
+  }
   // subscribeToMosByIds(ids: string[]): Observable<Mo[]> {
   //   if (_.isEmpty(ids)) return of([]);
   //   return this.client

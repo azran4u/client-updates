@@ -20,8 +20,8 @@ import { ParlamentService } from './parlament.service';
 import { of, Subscription } from 'rxjs';
 
 import * as _ from 'lodash';
-import { ID, Operation } from './parlament.model';
-import { pollEntity } from './pollEntity';
+import { ID, Mo, Operation } from './parlament.model';
+import { pollEntity, PollEntityEnum } from './pollEntity';
 
 export const PARLAMENT_KEY = 'EXAMPLES.PARLAMENT';
 
@@ -39,10 +39,12 @@ export class ParlamentEffects {
         ofType(parlamentAction.actionOperationDesiredByName),
         switchMap(({ names }) =>
           pollEntity<Operation, ID>({
-            entries: () =>
+            discriminator: PollEntityEnum.rle,
+            debug: true,
+            livequery: () =>
               this.parlamentService.subscribeToOperationsByName(names),
             byIds: (ids: ID[]) => this.parlamentService.getOperationsByIds(ids),
-            instore: () =>
+            myStore: () =>
               this.store.pipe(select(parlamentSelectors.selectAllOperations)),
             remove: (deleted: ID[]) =>
               this.store.dispatch(
@@ -55,6 +57,25 @@ export class ParlamentEffects {
           })
         )
       ),
+    { dispatch: false }
+  );
+
+  desiredOperationByNames1 = createEffect(
+    () =>
+      pollEntity<Mo, ID>({
+        discriminator: PollEntityEnum.child,
+        debug: true,
+        livequery: (ids: ID[]) =>
+          this.parlamentService.subscribeToMosByIds(ids),
+        fatherStore: () =>
+          this.store.pipe(select(parlamentSelectors.selectAllOperationsMoIds)),
+        byIds: (ids: ID[]) => this.parlamentService.getMoByIds(ids),
+        myStore: () => this.store.pipe(select(parlamentSelectors.selectAllMo)),
+        remove: (deleted: ID[]) =>
+          this.store.dispatch(parlamentAction.actionMoDeleted({ deleted })),
+        upsert: (upserted: Mo[]) =>
+          this.store.dispatch(parlamentAction.actionMoUpserted({ upserted }))
+      }),
     { dispatch: false }
   );
 

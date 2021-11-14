@@ -22,6 +22,16 @@ export const actionOperationDeleted = createAction(
   props<{ deleted: ID[] }>()
 );
 
+export const actionMoUpserted = createAction(
+  '[Operation] Upserted',
+  props<{ upserted: Mo[] }>()
+);
+
+export const actionMoDeleted = createAction(
+  '[Operation] Deleted',
+  props<{ deleted: ID[] }>()
+);
+
 // export const actionOperationFetchSuccess = createAction(
 //   '[Operation] Fetch Success',
 //   props<{ operations: Operation[] }>()
@@ -95,7 +105,7 @@ export const actionMoUpdated = createAction(
   props<EntityUpdate>()
 );
 
-export const actionMoDeleted = createAction(
-  '[Mo] Deleted',
-  props<{ ids: ID[] }>()
-);
+// export const actionMoDeleted = createAction(
+//   '[Mo] Deleted',
+//   props<{ ids: ID[] }>()
+// );

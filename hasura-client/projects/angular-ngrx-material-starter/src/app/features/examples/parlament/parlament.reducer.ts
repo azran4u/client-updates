@@ -35,14 +35,14 @@ const reducer = createReducer(
   //     ids.map((id) => draft.operations.delete(id));
   //   })
   // ),
-  on(parlamentAction.actionMoFetchSuccess, (state, { mos }) =>
+  on(parlamentAction.actionMoUpserted, (state, { upserted }) =>
     produce(state, (draft) => {
-      mos.map((x) => draft.mo.set(x.id, x));
+      upserted.map((x) => draft.mo.set(x.id, x));
     })
   ),
-  on(parlamentAction.actionMoDeleted, (state, { ids }) =>
+  on(parlamentAction.actionMoDeleted, (state, { deleted }) =>
     produce(state, (draft) => {
-      ids.map((id) => draft.mo.delete(id));
+      deleted.map((id) => draft.mo.delete(id));
     })
   )
 );
