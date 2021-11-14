@@ -14,10 +14,6 @@ import { ID, ParlamentEntity } from '../parlament.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
-export interface ParlamentEntityWithChilds extends ParlamentEntity {
-  childs: ID[];
-}
-
 @Component({
   selector: 'anms-parlament-entity-view-component',
   templateUrl: './parlament-entity-view-component.component.html',
@@ -30,7 +26,7 @@ export class ParlamentEntityViewComponentComponent
   @ViewChild(MatSort) sort: MatSort;
 
   @Input()
-  data: ParlamentEntityWithChilds[];
+  data: ParlamentEntity[];
 
   @Input()
   title: string;
@@ -41,12 +37,12 @@ export class ParlamentEntityViewComponentComponent
   @Output()
   updated = new EventEmitter<ID>();
 
-  dataSource: MatTableDataSource<ParlamentEntityWithChilds>;
+  dataSource: MatTableDataSource<ParlamentEntity>;
 
   displayedColumns: string[] = ['id', 'name', 'childs'];
 
   constructor() {
-    this.dataSource = new MatTableDataSource<ParlamentEntityWithChilds>();
+    this.dataSource = new MatTableDataSource<ParlamentEntity>();
   }
 
   refresh() {

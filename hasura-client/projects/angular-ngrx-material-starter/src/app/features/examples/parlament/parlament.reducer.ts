@@ -13,16 +13,28 @@ export const initialState: ParlamentState = {
 
 const reducer = createReducer(
   initialState,
-  on(parlamentAction.actionOperationFetchSuccess, (state, { operations }) =>
+  on(parlamentAction.actionOperationUpserted, (state, { upserted }) =>
     produce(state, (draft) => {
-      operations.map((x) => draft.operations.set(x.id, x));
+      upserted.map((operation) =>
+        draft.operations.set(operation.id, operation)
+      );
     })
   ),
-  on(parlamentAction.actionOperationDeleted, (state, { ids }) =>
+  on(parlamentAction.actionOperationDeleted, (state, { deleted }) =>
     produce(state, (draft) => {
-      ids.map((id) => draft.operations.delete(id));
+      deleted.map((id) => draft.operations.delete(id));
     })
   ),
+  // on(parlamentAction.actionOperationFetchSuccess, (state, { operations }) =>
+  //   produce(state, (draft) => {
+  //     operations.map((x) => draft.operations.set(x.id, x));
+  //   })
+  // ),
+  // on(parlamentAction.actionOperationDeleted, (state, { ids }) =>
+  //   produce(state, (draft) => {
+  //     ids.map((id) => draft.operations.delete(id));
+  //   })
+  // ),
   on(parlamentAction.actionMoFetchSuccess, (state, { mos }) =>
     produce(state, (draft) => {
       mos.map((x) => draft.mo.set(x.id, x));

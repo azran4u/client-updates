@@ -1,11 +1,15 @@
 export type ID = string;
 
-export interface ParlamentEntity {
-  id: ID;
+export interface BaseEntity<T = ID> {
+  id: T;
+  updatedAt: string;
+}
+export interface ParlamentEntity extends BaseEntity<ID> {
   name: string;
+  childs?: ID[];
 }
 export interface Operation extends ParlamentEntity {
-  mos: Mo['id'][];
+  mosids: Mo['id'][];
 }
 
 export interface Mo extends ParlamentEntity {
@@ -14,7 +18,7 @@ export interface Mo extends ParlamentEntity {
 
 export interface Area extends ParlamentEntity {}
 
-export interface EntityUpdate {
-  upserted: ID[];
-  deleted: ID[];
+export interface EntityUpdate<U = ID, D = ID> {
+  upserted: U[];
+  deleted: D[];
 }

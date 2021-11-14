@@ -2,11 +2,6 @@ import { createAction, props } from '@ngrx/store';
 import { EntityUpdate, ID, Mo, Operation } from './parlament.model';
 
 // operation actions
-export const actionOperationDesired = createAction(
-  '[Operation] Desired',
-  props<{ ids: ID[] }>()
-);
-
 export const actionOperationDesiredByName = createAction(
   '[Operation] Desired By Name',
   props<{ names: string[] }>()
@@ -17,35 +12,50 @@ export const actionOperationFetchByIds = createAction(
   props<{ ids: ID[] }>()
 );
 
-export const actionOperationFetchSuccess = createAction(
-  '[Operation] Fetch Success',
-  props<{ operations: Operation[] }>()
-);
-
-export const actionOperationFetchFailure = createAction(
-  '[Operation] Fetch Failure',
-  props<{ error: Error }>()
-);
-
-export const actionOperationSubscribeByIds = createAction(
-  '[Operation] Subscribe By Id',
-  props<{ ids: ID[] }>()
-);
-
-export const actionOperationSubscriptionFailure = createAction(
-  '[Operation] Subscription Failure',
-  props<{ error: Error }>()
-);
-
-export const actionOperationUpdated = createAction(
-  '[Operation] Updated',
-  props<EntityUpdate>()
+export const actionOperationUpserted = createAction(
+  '[Operation] Upserted',
+  props<{ upserted: Operation[] }>()
 );
 
 export const actionOperationDeleted = createAction(
   '[Operation] Deleted',
-  props<{ ids: ID[] }>()
+  props<{ deleted: ID[] }>()
 );
+
+// export const actionOperationFetchSuccess = createAction(
+//   '[Operation] Fetch Success',
+//   props<{ operations: Operation[] }>()
+// );
+
+// export const actionOperationDesiredByIds = createAction(
+//   '[Operation] Desired',
+//   props<{ ids: ID[] }>()
+// );
+
+// export const actionOperationUpdateStore = createAction(
+//   '[Operation] Desired',
+//   props<{ upserted: Operation[]; deleted: ID[] }>()
+// );
+
+// export const actionOperationFetchFailure = createAction(
+//   '[Operation] Fetch Failure',
+//   props<{ error: Error }>()
+// );
+
+// export const actionOperationSubscribeByIds = createAction(
+//   '[Operation] Subscribe By Id',
+//   props<{ ids: ID[] }>()
+// );
+
+export const actionNetworkFailure = createAction(
+  'Network Failure',
+  props<{ component: string; error: Error }>()
+);
+
+// export const actionOperationDeleted = createAction(
+//   '[Operation] Deleted',
+//   props<{ ids: ID[] }>()
+// );
 
 export const actionWsConnected = createAction('[ALL ENTITIES] WS Connected');
 
