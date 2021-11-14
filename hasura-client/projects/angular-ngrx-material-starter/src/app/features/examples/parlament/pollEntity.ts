@@ -83,7 +83,7 @@ export function pollEntity<Entity, IDType>(
         map(([current, prev]) => diff(prev, current)),
         tap((data) => log(data, 'diff', debug)),
         tap(({ deleted, upserted }) => remove(deleted)),
-        tap((data) => log(data, 'remove', debug)),
+        tap(({ deleted, upserted }) => log(deleted, 'remove', debug)),
         concatMap(({ deleted, upserted }) => byIds(upserted)),
         tap((data) => log(data, 'byIds', debug)),
         tap((entities) => upsert(entities))

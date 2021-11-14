@@ -39,8 +39,11 @@ export const selectAllOperationsMoIds = createSelector(
     const operations = Array.from(opmap.values());
     const moidsarray = operations.map((op) => op.mosids);
     let moids: string[] = [];
-    moids = [].concat.apply([], moidsarray);
+    moids = [].concat.apply([], moidsarray) as string[];
+    moids = moids.filter((mo) => !_.isNil(mo));
+    console.log(`moids ${JSON.stringify(moids, null, 4)}`);
     moids = _.uniq(moids);
+    console.log(`moids after uniq ${JSON.stringify(moids, null, 4)}`);
     return moids ?? [];
   }
 );
