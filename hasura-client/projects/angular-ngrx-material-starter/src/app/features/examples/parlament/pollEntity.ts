@@ -34,6 +34,7 @@ export interface BasePollOptions<Entity, IDType> {
     current: BaseEntity<IDType>[]
   ) => EntityUpdate<IDType, IDType>;
   debug?: boolean;
+  entityName?: string;
 }
 export interface PollChildOptions<Entity, IDType>
   extends BasePollOptions<Entity, IDType> {
@@ -54,7 +55,7 @@ export type PollOptions<Entity, IDType> =
 
 export function pollEntity<Entity, IDType>(
   options: PollOptions<Entity, IDType>
-): Observable<any> {
+): Observable<unknown> {
   const {
     livequery,
     myStore,
@@ -62,11 +63,12 @@ export function pollEntity<Entity, IDType>(
     upsert,
     remove,
     debug = false,
-    diff = defaultDiff
+    diff = defaultDiff,
+    entityName = ''
   } = options;
   if (options.discriminator === PollEntityEnum.child) {
     return options.fatherStore().pipe(
-      tap((data) => log(data, 'father', debug)),
+      tap((data) => log(data, entityName, 'father', debug)),
       switchMap((ids) => livequery(ids).pipe(handleEntity()))
     );
   }
@@ -77,23 +79,32 @@ export function pollEntity<Entity, IDType>(
   function handleEntity() {
     return function (source: Observable<BaseEntity<IDType>[]>) {
       return source.pipe(
-        tap((data) => log(data, 'livequery', debug)),
+        tap((data) => log(data, entityName, 'livequery', debug)),
         withLatestFrom(myStore()),
-        tap((data) => log(data, 'withLatestFromMyStore', debug)),
+        tap((data) => log(data, entityName, 'withLatestFromMyStore', debug)),
         map(([current, prev]) => diff(prev, current)),
-        tap((data) => log(data, 'diff', debug)),
+        tap((data) => log(data, entityName, 'diff', debug)),
         tap(({ deleted, upserted }) => remove(deleted)),
-        tap(({ deleted, upserted }) => log(deleted, 'remove', debug)),
+        tap(({ deleted, upserted }) =>
+          log(deleted, entityName, 'remove', debug)
+        ),
         concatMap(({ deleted, upserted }) => byIds(upserted)),
-        tap((data) => log(data, 'byIds', debug)),
+        tap((data) => log(data, entityName, 'byIds', debug)),
         tap((entities) => upsert(entities))
       );
     };
   }
 
-  function log(data: any, name: string, debug: boolean) {
+  function log(
+    data: any,
+    entityName: string,
+    operation: string,
+    debug: boolean
+  ) {
     if (debug) {
-      console.log(`pollEntity ${name} ${JSON.stringify(data, null, 4)}`);
+      console.log(
+        `pollEntity ${entityName}-${operation} ${JSON.stringify(data, null, 4)}`
+      );
     }
   }
 }

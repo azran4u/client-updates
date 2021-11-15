@@ -40,22 +40,22 @@ export class ParlamentContainerComponent implements OnInit, OnDestroy {
       select(parlamentSelectors.selectAllOperations),
       map((op) =>
         op.map((o) => {
-          return { ...o, childs: o.mosids };
+          return { ...o, childs: o.mos?.map((x) => x.id) ?? [] };
         })
       )
     );
-    this.operationsFromService$ = this.parlamentService.getAllOperations().pipe(
-      map((op) =>
-        op.map((o) => {
-          return { ...o, childs: o.mosids };
-        })
-      )
-    );
+    // this.operationsFromService$ = this.parlamentService.getAllOperations().pipe(
+    //   map((op) =>
+    //     op.map((o) => {
+    //       return { ...o, childs: o.mosids };
+    //     })
+    //   )
+    // );
     this.mos$ = this.store.pipe(
       select(parlamentSelectors.selectAllMo),
-      map((op) =>
-        op.map((o) => {
-          return { ...o, childs: o.areas };
+      map((mo) =>
+        mo.map((o) => {
+          return { ...o, childs: o.areas?.map((x) => x.id) ?? [] };
         })
       )
     );

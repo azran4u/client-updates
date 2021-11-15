@@ -7,7 +7,7 @@ import { ParlamentState } from './parlament.state';
 enableMapSet();
 export const initialState: ParlamentState = {
   operations: new Map<ID, Operation>(),
-  mo: new Map<ID, Mo>(),
+  mos: new Map<ID, Mo>(),
   areas: new Map<ID, Area>()
 };
 
@@ -37,12 +37,12 @@ const reducer = createReducer(
   // ),
   on(parlamentAction.actionMoUpserted, (state, { upserted }) =>
     produce(state, (draft) => {
-      upserted.map((x) => draft.mo.set(x.id, x));
+      upserted.map((x) => draft.mos.set(x.id, x));
     })
   ),
   on(parlamentAction.actionMoDeleted, (state, { deleted }) =>
     produce(state, (draft) => {
-      deleted.map((id) => draft.mo.delete(id));
+      deleted.map((id) => draft.mos.delete(id));
     })
   )
 );

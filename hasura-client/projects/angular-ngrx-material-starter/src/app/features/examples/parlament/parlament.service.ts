@@ -21,16 +21,18 @@ export class ParlamentService {
     return this.client
       .query<{ operations: Operation[] }>({
         query: gql`
-          query operationsByIds($opids: [String!]) {
-            operations(where: { id: { _in: $opids } }) {
+          query operationsByIds($ids: [String!]) {
+            operations(where: { id: { _in: $ids } }) {
               id
               name
-              mosids
-              updatedAt: updated_at
+              mos {
+                id
+              }
+              updatedAt
             }
           }
         `,
-        variables: { opids: ids }
+        variables: { ids }
       })
       .pipe(map((res) => res.data?.operations ?? []));
   }
@@ -42,14 +44,14 @@ export class ParlamentService {
         operations: BaseEntity[];
       }>({
         query: gql`
-          subscription subscribeToOperationsByNames($opnames: [String!]) {
-            operations(where: { name: { _in: $opnames } }) {
+          subscription subscribeToOperationsByNames($names: [String!]) {
+            operations(where: { name: { _in: $names } }) {
               id
-              updatedAt: updated_at
+              updatedAt
             }
           }
         `,
-        variables: { opnames: names }
+        variables: { names }
       })
       .pipe(map((res) => res.data?.operations ?? []));
   }
@@ -60,11 +62,13 @@ export class ParlamentService {
       .query<{ mos: Mo[] }>({
         query: gql`
           query mosByIds($ids: [String!]) {
-            mos(where: { id: { _in: $opids } }) {
+            mos(where: { id: { _in: $ids } }) {
               id
               name
-              areaids
-              updatedAt: updated_at
+              areas {
+                id
+              }
+              updatedAt
             }
           }
         `,
@@ -80,10 +84,10 @@ export class ParlamentService {
         mos: BaseEntity[];
       }>({
         query: gql`
-          subscription subscribeToMosByNames($ids: [String!]) {
+          subscription subscribeToMosByIds($ids: [String!]) {
             mos(where: { id: { _in: $ids } }) {
               id
-              updatedAt: updated_at
+              updatedAt
             }
           }
         `,

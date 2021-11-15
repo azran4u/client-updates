@@ -6,14 +6,14 @@ export interface BaseEntity<T = ID> {
 }
 export interface ParlamentEntity extends BaseEntity<ID> {
   name: string;
-  childs?: ID[];
+  childs: ID[];
 }
 export interface Operation extends ParlamentEntity {
-  mosids: Mo['id'][];
+  mos: Pick<Mo, 'id'>[];
 }
 
 export interface Mo extends ParlamentEntity {
-  areas: Area['id'][];
+  areas: Pick<Area, 'id'>[];
 }
 
 export interface Area extends ParlamentEntity {}
