@@ -11,8 +11,6 @@ import {
   withLatestFrom
 } from 'rxjs/operators';
 
-import { LocalStorageService } from '../../../core/core.module';
-
 import { State } from '../examples.state';
 import * as parlamentAction from './parlament.actions';
 import * as parlamentSelectors from './parlament.selectors';
@@ -31,13 +29,12 @@ export class ParlamentEffects {
     this.actions$.pipe(
       ofType(parlamentAction.actionOperationDesired),
       withLatestFrom(
-        this.store
-          .pipe(select(parlamentSelectors.selectAllOperations))
-          .pipe(
-            map((operationsInStore) =>
-              operationsInStore.map((operation) => operation.id)
-            )
+        this.store.pipe(
+          select(parlamentSelectors.selectAllOperations),
+          map((operationsInStore) =>
+            operationsInStore.map((operation) => operation.id)
           )
+        )
       ),
       switchMap(([{ ids }, currentIds]) => {
         const idsToRemove = currentIds.filter(
@@ -182,13 +179,12 @@ export class ParlamentEffects {
     this.actions$.pipe(
       ofType(parlamentAction.actionWsConnected),
       switchMap(() =>
-        this.store
-          .pipe(select(parlamentSelectors.selectAllOperations))
-          .pipe(
-            map((operationsInStore) =>
-              operationsInStore.map((operation) => operation.id)
-            )
+        this.store.pipe(
+          select(parlamentSelectors.selectAllOperations),
+          map((operationsInStore) =>
+            operationsInStore.map((operation) => operation.id)
           )
+        )
       ),
       switchMap((ids) => of(parlamentAction.actionOperationFetchByIds({ ids })))
     )
@@ -312,7 +308,6 @@ export class ParlamentEffects {
   constructor(
     private actions$: Actions,
     private store: Store<State>,
-    private localStorageService: LocalStorageService,
     private parlamentService: ParlamentService
   ) {}
 }
